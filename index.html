@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="welcome-message">
+        <p>Welcome to the Contact List!</p>
+    </div>
+    <div class="login-cont">
+        <div class="tab">
+            <button class="active tablinks" id="defaultOpen">Login</button>
+            <button class="tablinks">Sign Up</button>
+        </div>
+
+        <div id="Login" class="tabcontent" style="display: block;">
+            <h2>Login</h2>
+            <form id="logForm">
+                <div class="input-group">
+                    <label for="user">Username</label>
+                    <input type="text" id="user" name="user" required>
+                </div>
+                <div class="input-group">
+                    <label for="pass">Password</label>
+                    <input type="pass" id="pass" name="pass" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p id="err-message" class="error-message"></p>
+        </div>
+
+        <div id="Signup" class="tabcontent">
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="input-grp">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                </div>
+                <div class="input-grp">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname" name="lastname" required>
+                </div>
+                <div class="input-grp">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-grp">
+                    <label for="signup-pass">Password</label>
+                    <input type="pass" id="signup-pass" name="signup-pass" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p id="signup-err-message" class="err-message"></p>
+        </div>
+    </div>
+</body>
+</html>

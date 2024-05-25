@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List Manager</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Contact List Manager</h1>
+            <button id="logoutButton" class="btn">Logout</button>
+        </header>
+        
+        <section class="add-contact">
+            <h2>Add Contact</h2>
+            <form id="addContactForm">
+                <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" required>
+                <button type="submit" class="btn">Add Contact</button>
+            </form>
+        </section>
+        
+        <section class="search-contact">
+            <h2>Search Contact</h2>
+            <form id="searchContactForm">
+                <input type="text" id="searchInput" name="searchInput" placeholder="Search by Name or Phone Number">
+                <button type="submit" class="btn">Search</button>
+            </form>
+            <div id="searchResults"></div>
+        </section>
+        
+        <section class="remove-contact">
+            <h2>Remove Contact</h2>
+            <form id="removeContactForm">
+                <input type="text" id="removeInput" name="removeInput" placeholder="Enter Name or Phone Number">
+                <button type="submit" class="btn">Remove</button>
+            </form>
+        </section>
+    </div>
+</body>
+</html>
