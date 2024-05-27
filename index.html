@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="css/index.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 </head>
 <body>
     <div class="welcome-message">
@@ -18,7 +21,7 @@
 
         <div id="Login" class="tabcontent" style="display: block;">
             <h2>Login</h2>
-            <form id="logForm">
+            <form id="logForm" method="POST">
                 <div class="input-group">
                     <label for="user">Username</label>
                     <input type="text" id="user" name="user" required>
@@ -27,34 +30,55 @@
                     <label for="pass">Password</label>
                     <input type="pass" id="pass" name="pass" required>
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" class="btn">Login</button>
+		        <span class="text" id="loginResult"></span>
             </form>
             <p id="err-message" class="error-message"></p>
         </div>
 
         <div id="Signup" class="tabcontent">
             <h2>Sign Up</h2>
-            <form id="signupForm">
-                <div class="input-grp">
+            <form id="signupForm" method="POST">
+                <div class="input-group">
                     <label for="firstname">First Name</label>
                     <input type="text" id="firstname" name="firstname" required>
                 </div>
-                <div class="input-grp">
+                <div class="input-group">
                     <label for="lastname">Last Name</label>
                     <input type="text" id="lastname" name="lastname" required>
                 </div>
-                <div class="input-grp">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
                 </div>
-                <div class="input-grp">
+                <div class="input-group">
                     <label for="signup-pass">Password</label>
-                    <input type="pass" id="signup-pass" name="signup-pass" required>
+                    <input type="password" id="signup-pass" name="signup-pass" required>
                 </div>
-                <button type="submit">Sign Up</button>
+                <button type="submit" class="btn">Sign Up</button>
+                <span class="text" id="signupResult"></span>
             </form>
-            <p id="signup-err-message" class="err-message"></p>
+            <p id="signup-err-message" class="error-message"></p>
         </div>
     </div>
+        <script type="text/javascript" src ="js/code.js"></script>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Open default tab
+        document.getElementById("defaultOpen").click();
+    </script>
 </body>
 </html>
