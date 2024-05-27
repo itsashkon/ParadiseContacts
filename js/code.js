@@ -5,6 +5,43 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Event listener for login form submission
+    document.getElementById("logForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        doLogin();
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        doSignup();
+    });
+
+    const logoutButton = document.getElementById("logoutButton");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function() {
+            doLogout();
+    });
+
+    // Event listener for add contact form submission
+    document.getElementById("addContactForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        addContact();
+    });
+
+    // Event listener for search contact form submission
+    document.getElementById("searchContactForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        searchContact();
+    });
+
+    // Event listener for remove contact form submission
+    document.getElementById("removeContactForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        removeContact();
+    });
+};
+
 function doLogin()
 {
 	userId = 0;
@@ -21,7 +58,7 @@ function doLogin()
 //	var tmp = {login:login,password:hash};
 	let jsonPayload = JSON.stringify( tmp );
 	
-	let url = urlBase + '/Login.' + extension;
+	let url = urlBase + '/LAMPAPI/login.' + extension;
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -56,6 +93,40 @@ function doLogin()
 		document.getElementById("loginResult").innerHTML = err.message;
 	}
 
+}
+
+function doSignup() {
+    let firstname = document.getElementById("firstname").value;
+    let lastname = document.getElementById("lastname").value;
+    let login = document.getElementById("username").value;
+    let password = document.getElementById("signup-pass").value;
+
+    document.getElementById("signupResult").innerHTML = "";
+
+    let tmp = { firstName: firstname, lastName: lastname, login: login, password: password };
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/LAMPAPI/register.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    document.getElementById("signupResult").innerHTML = jsonObject.error;
+                } else {
+                    document.getElementById("signupResult").innerHTML = "User has been registered successfully";
+                    // Optionally redirect or clear the form
+                }
+            }
+        };
+        xhr.send(jsonPayload);
+    } catch (err) {
+        document.getElementById("signupResult").innerHTML = err.message;
+    }
 }
 
 function saveCookie()
@@ -105,38 +176,42 @@ function doLogout()
 	firstName = "";
 	lastName = "";
 	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "lastName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "userId= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 	window.location.href = "index.html";
 }
 
 function addContact()
 {
-	let newColor = document.getElementById("contactText").value;
-	document.getElementById("contactAddResult").innerHTML = "";
+	let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
+    let phoneNumber = document.getElementById("phoneNumber").value;
 
-	let tmp = {color:newColor,userId,userId};
-	let jsonPayload = JSON.stringify( tmp );
+    let tmp = { firstName: firstName, lastName: lastName, phoneNumber: phoneNumber };
+    let jsonPayload = JSON.stringify(tmp);
 
-	let url = urlBase + '/AddContacts.' + extension;
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("contactAddResult").innerHTML = "Contact has been added";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("contactAddResult").innerHTML = err.message;
-	}
-	
+    let url = urlBase + '/LAMPAPI/addContacts.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    document.getElementById("addContactResult").innerHTML = jsonObject.error;
+                } else {
+                    document.getElementById("addContactResult").innerHTML = "Contact has been added successfully";
+                    // Clear the form
+                    document.getElementById("addContactForm").reset();
+                }
+            }
+        };
+        xhr.send(jsonPayload);
+    } catch (err) {
+        document.getElementById("addContactResult").innerHTML = err.message;
+    }
 }
 
 function searchContact()
@@ -183,3 +258,4 @@ function searchContact()
 	}
 	
 }
+});
