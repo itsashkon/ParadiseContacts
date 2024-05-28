@@ -19,7 +19,6 @@
 		$stmt->bind_param("ssssi", $firstName, $lastName, $phoneNumber, $emailAddress, $userId);
 		$stmt->execute();
 		$stmt->close();
-		$conn->close();
 		returnWithError("");
 		}
 
