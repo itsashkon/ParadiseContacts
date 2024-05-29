@@ -12,38 +12,28 @@
 <body>
     <div class="container">
         <header>
-            <a href="aboutUs.html" id="aboutUsButton" class="btn">About Us</a>
-            <h1>Contact List Manager</h1>
-            <button id="logoutButton" class="btn">Logout</button>
+            <div class="header-left">
+                <a href="aboutUs.html" id="aboutUsButton" class="btn">About Us</a>
+            </div>
+            <h1>Contacts</h1>
+            <div class="header-right">
+                <a href="contactPage.html" id="contactPageButton" class="btn">Contacts</a>
+                <a href="index.html" id="logoutButton" class="btn">Logout</a>
+            </div>
         </header>
-        
-        <section class="add-contact">
-            <h2>Add Contact</h2>
-            <form id="addContactForm" method="POST">
-                <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
-                <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
-                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" required>
-                <button type="submit" class="btn">Add Contact</button>
-                <div id="addContactResult" class="result"></div>
-            </form>
-        </section>
-        
-        <section class="search-contact">
-            <h2>Search Contact</h2>
-            <form id="searchContactForm" method="POST">
-                <input type="text" id="searchInput" name="searchInput" placeholder="Search by Name or Phone Number">
-                <button type="submit" class="btn">Search</button>
-            </form>
-            <div id="searchResults"></div>
-        </section>
-        
-        <section class="remove-contact">
-            <h2>Remove Contact</h2>
-            <form id="removeContactForm" method="POST">
-                <input type="text" id="removeInput" name="removeInput" placeholder="Enter Name or Phone Number">
-                <button type="submit" class="btn">Remove</button>
-            </form>
-        </section>
+        <div class="additional-content">
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Search contacts...">
+            </div>
+            <div class="contact-form">
+                <input type="text" id="first-name" placeholder="First Name">
+                <input type="text" id="last-name" placeholder="Last Name">
+                <input type="text" id="phone" placeholder="Phone Number">
+                <input type="email" id="email" placeholder="Email Address">
+                <button onclick="addContact()">Add Contact</button>
+            </div>
+            <ul id="contact-list"></ul>
+        </div>
     </div>
     <script src="js/code.js"></script>
     <script>
