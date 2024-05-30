@@ -3,42 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Login and Sign Up Page</title>
     <link rel="stylesheet" href="css/index.css">
+    <script src="js/md5.js"></script>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 </head>
 <body>
     <div class="welcome-message">
-        <p>Welcome to the Contact List!</p>
+        <p>Welcome to ParadiseContacts!</p>
     </div>
     <div class="login-cont">
         <div class="tab">
-            <button class="active tablinks" id="defaultOpen">Login</button>
-            <button class="tablinks">Sign Up</button>
+            <button class="tablinks" onclick="openTab(event, 'Login')" id="defaultOpen">Login</button>
+            <button class="tablinks" onclick="openTab(event, 'Signup')">Sign Up</button>
         </div>
 
-        <div id="Login" class="tabcontent" style="display: block;">
+        <div id="Login" class="tabcontent">
             <h2>Login</h2>
-            <form id="logForm" method="POST">
+            <form id="logForm">
                 <div class="input-group">
                     <label for="user">Username</label>
                     <input type="text" id="user" name="user" required>
                 </div>
                 <div class="input-group">
                     <label for="pass">Password</label>
-                    <input type="pass" id="pass" name="pass" required>
+                    <input type="password" id="pass" name="pass" required>
                 </div>
-                <button type="submit" class="btn">Login</button>
-		        <span class="text" id="loginResult"></span>
+                <button type="submit" class="btn" id="loginButton">Login</button>
+                <span class="text" id="loginResult"></span>
             </form>
             <p id="err-message" class="error-message"></p>
         </div>
 
         <div id="Signup" class="tabcontent">
             <h2>Sign Up</h2>
-            <form id="signupForm" method="POST">
+            <form id="signupForm">
                 <div class="input-group">
                     <label for="firstname">First Name</label>
                     <input type="text" id="firstname" name="firstname" required>
@@ -61,7 +62,7 @@
             <p id="signup-err-message" class="error-message"></p>
         </div>
     </div>
-        <script type="text/javascript" src ="js/code.js"></script>
+    <script src="js/code.js"></script>
     <script>
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
@@ -77,8 +78,9 @@
             evt.currentTarget.className += " active";
         }
 
-        // Open default tab
-        document.getElementById("defaultOpen").click();
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("defaultOpen").click();
+        });
     </script>
 </body>
 </html>
