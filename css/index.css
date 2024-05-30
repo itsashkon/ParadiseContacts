@@ -69,10 +69,6 @@ body {
     display: block;
 }
 
-.login-container h2 {
-    margin-bottom: 20px;
-}
-
 .input-group {
     margin-bottom: 15px;
     text-align: left; 
@@ -105,8 +101,17 @@ button {
     transition: background-color 0.3s;
 }
 
+#loginButton{
+    margin-bottom: 20px;
+}
+
 button:hover {
     background-color: #0056b3;
+}
+
+#loginResult {
+    text-align: center;
+    color: #ff0000;
 }
 
 .err-message {
