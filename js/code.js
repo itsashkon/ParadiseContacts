@@ -23,6 +23,15 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    document.getElementById("signup-username").addEventListener("input", function() {
+        checkUsernameComplexity(this.value);
+    });
+
+    document.getElementById("signup-pass").addEventListener("input", function() {
+        checkPasswordComplexity(this.value, "signup-");
+        });
+    });
+
     document.getElementById("addContactForm").addEventListener("submit", function(event) {
         event.preventDefault();
         addContact();
@@ -37,7 +46,76 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         removeContact();
     });
-});
+
+function checkUsernameComplexity(username) {
+    const minLength = 3;
+    const maxLength = 11;
+    const hasLetter = /[A-Za-z]/;
+
+    let length = document.getElementById("username-length");
+    let letter = document.getElementById("username-letter");
+
+    if (username.length >= minLength && username.length <= maxLength) {
+        length.classList.remove("invalid");
+        length.classList.add("valid");
+    } else {
+        length.classList.remove("valid");
+        length.classList.add("invalid");
+    }
+
+    if (hasLetter.test(username)) {
+        letter.classList.remove("invalid");
+        letter.classList.add("valid");
+    } else {
+        letter.classList.remove("valid");
+        letter.classList.add("invalid");
+    }
+}
+
+function checkPasswordComplexity(password, prefix) {
+    const minLength = 8;
+    const maxLength = 24;
+    const hasNumber = /\d/;
+    const hasLetter = /[A-Za-z]/;
+    const hasSpecialChar = /[!@#$%^&*]/;
+
+    let length = document.getElementById(prefix + "length");
+    let number = document.getElementById(prefix + "number");
+    let letter = document.getElementById(prefix + "letter");
+    let special = document.getElementById(prefix + "special");
+
+    if (password.length >= minLength && password.length <= maxLength) {
+        length.classList.remove("invalid");
+        length.classList.add("valid");
+    } else {
+        length.classList.remove("valid");
+        length.classList.add("invalid");
+    }
+
+    if (hasNumber.test(password)) {
+        number.classList.remove("invalid");
+        number.classList.add("valid");
+    } else {
+        number.classList.remove("valid");
+        number.classList.add("invalid");
+    }
+
+    if (hasLetter.test(password)) {
+        letter.classList.remove("invalid");
+        letter.classList.add("valid");
+    } else {
+        letter.classList.remove("valid");
+        letter.classList.add("invalid");
+    }
+
+    if (hasSpecialChar.test(password)) {
+        special.classList.remove("invalid");
+        special.classList.add("valid");
+    } else {
+        special.classList.remove("valid");
+        special.classList.add("invalid");
+    }
+}
 
 function doLogin() {
     userId = 0;
@@ -50,7 +128,6 @@ function doLogin() {
 
     console.log("Login:", login);
     console.log("Hashed Password:", hash);
-
 
     document.getElementById("loginResult").innerHTML = "";
 
@@ -90,7 +167,7 @@ function doLogin() {
 function doSignup() {
     let firstname = document.getElementById("firstname").value;
     let lastname = document.getElementById("lastname").value;
-    let login = document.getElementById("username").value;
+    let login = document.getElementById("signup-username").value;
     let password = document.getElementById("signup-pass").value;
     var hash = md5(password);
 
@@ -111,7 +188,7 @@ function doSignup() {
                 if (jsonObject.error) {
                     document.getElementById("signupResult").innerHTML = jsonObject.error;
                 } else {
-                    document.getElementById("signupResult").innerHTML = "User has been registered successfully";
+                    document.getElementById("signupResult").innerHTML = "User has been successfully registered!";
                 }
             }
         };
@@ -120,6 +197,7 @@ function doSignup() {
         document.getElementById("signupResult").innerHTML = err.message;
     }
 }
+
 
 function saveCookie() {
     let minutes = 20;
