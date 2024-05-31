@@ -12,12 +12,14 @@ body {
 }
 
 .welcome-message {
-    position: absolute;
-    top: 20px; 
-    font-size: 24px;
-    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 36px; 
+    color: white; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px; 
     text-align: center; 
-    width: 100%;
 }
 
 .login-cont {
@@ -29,6 +31,17 @@ body {
     max-width: 400px;
     text-align: center; 
     position: relative;
+}
+
+/* styles.css */
+.h2-with-logo {
+    padding-top: 60px;
+    background-image: url('../images/logo.png');
+    background-repeat: no-repeat;
+    background-position: 10px center; /* Adjust as needed */
+    background-size: 130px 130px; /* Adjust as needed */
+    padding-bottom: 60px;
+    padding-left: 135px;
 }
 
 .tab {
