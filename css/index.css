@@ -33,9 +33,8 @@ body {
     position: relative;
 }
 
-/* styles.css */
 .h2-with-logo {
-    padding-top: 60px;
+    padding-top: 50px;
     background-image: url('../images/logo.png');
     background-repeat: no-repeat;
     background-position: 10px center; /* Adjust as needed */
