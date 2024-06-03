@@ -1,3 +1,4 @@
+
 const urlBase = 'http://smallcopproject.com';
 const extension = 'php';
 
@@ -144,7 +145,7 @@ function doLogin() {
             if (this.readyState == 4 && this.status == 200) {
                 let jsonObject = JSON.parse(xhr.responseText);
                 userId = jsonObject.id;
-
+                saveGlobalId(userId);
                 if (userId < 1) {
                     document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
                     return;
@@ -238,12 +239,12 @@ function doLogout() {
 }
 
 function addContact() {
-    let firstName = document.getElementById("firstName").value;
-    let lastName = document.getElementById("lastName").value;
-    let phoneNumber = document.getElementById("phoneNumber").value;
-    let emailAddress = document.getElementById("emailAddress").value; // Added email field
+    let firstName = document.getElementById("first-name").value;
+    let lastName = document.getElementById("last-name").value;
+    let phoneNumber = document.getElementById("phone").value;
+    let emailAddress = document.getElementById("email").value; // Added email field
 
-    let tmp = {firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, emailAddress: emailAddress, userId: userId}; // Include userId
+    let tmp = {firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, emailAddress: emailAddress, userId: getGlobalId()}; // Include userId
     let jsonPayload = JSON.stringify(tmp);
 
     let url = urlBase + '/LAMPAPI/addContacts.' + extension;
@@ -332,5 +333,53 @@ function searchContact() {
             document.getElementById("removeContactResult").innerHTML = err.message;
         }
     }
+}
+
+    function getGlobalId(){
+        return localStorage.getItem('globalId');
+    }
     
+    function saveGlobalId(Id){
+        console.log("globalId saved as:" + Id);
+        localStorage.setItem('globalId',Id);
+    }
+
+function loadContacts() {
+    let tmp = {
+        search: "",
+        userId: getGlobalId()
+    };
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/SearchContacts.' + extension;
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    console.log(jsonObject.error);
+                    return;
+                }
+                let row = "<table border='1'>"
+                for (let i = 0; i < jsonObject.results.length; i++) {
+                    text += "<tr id='row" + i + "'>"
+                    text += "<td id='first_Name" + i + "'><span>" + jsonObject.results[i].FirstName + "</span></td>";
+                    text += "<td id='last_Name" + i + "'><span>" + jsonObject.results[i].LastName + "</span></td>";
+                    text += "<td id='email" + i + "'><span>" + jsonObject.results[i].EmailAddress + "</span></td>";
+                    text += "<td id='phone" + i + "'><span>" + jsonObject.results[i].PhoneNumber + "</span></td>";
+                    text += "<tr/>"
+                }
+                text += "</table>"
+                document.getElementById("contacts-table-body").innerHTML = text;
+            }
+        };
+        xhr.send(jsonPayload);
+    } catch (err) {
+        console.log(err.message);
+    }
 }
