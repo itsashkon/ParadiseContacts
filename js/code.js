@@ -1,4 +1,3 @@
-
 const urlBase = 'http://smallcopproject.com';
 const extension = 'php';
 
@@ -279,7 +278,7 @@ function searchContact() {
     let tmp = {search: srch, userId: userId};
     let jsonPayload = JSON.stringify(tmp);
 
-    let url = urlBase + '/SearchContacts.' + extension;
+    let url = urlBase + '/LAMPAPI/searchContacts.' + extension;
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
@@ -352,7 +351,7 @@ function loadContacts() {
 
     let jsonPayload = JSON.stringify(tmp);
 
-    let url = urlBase + '/SearchContacts.' + extension;
+    let url = urlBase + '/LAMPAPI/searchContacts.' + extension;
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -367,7 +366,7 @@ function loadContacts() {
                 }
                 let row = "<table border='1'>"
                 for (let i = 0; i < jsonObject.results.length; i++) {
-                    text += "<tr id='row" + i + "'>"
+                    text += "<tr id='row" + i + "'>";
                     text += "<td id='first_Name" + i + "'><span>" + jsonObject.results[i].FirstName + "</span></td>";
                     text += "<td id='last_Name" + i + "'><span>" + jsonObject.results[i].LastName + "</span></td>";
                     text += "<td id='email" + i + "'><span>" + jsonObject.results[i].EmailAddress + "</span></td>";
