@@ -516,44 +516,46 @@ function saveContact(contactId) {
     }
 }
 
-
 function deleteContact(contactId) {
-    console.log(`Attempting to delete contactId: ${contactId}`);
+    if (confirm("Are you sure you want to delete this contact?")) {
+        console.log(`Attempting to delete contactId: ${contactId}`);
 
-    let tmp = {
-        id: contactId,
-        userId: getGlobalId()
-    };
-    let jsonPayload = JSON.stringify(tmp);
+        let tmp = {
+            id: contactId,
+            userId: getGlobalId()
+        };
+        let jsonPayload = JSON.stringify(tmp);
 
-    let url = urlBase + '/LAMPAPI/deleteContact.' + extension;
+        let url = urlBase + '/LAMPAPI/deleteContacts.' + extension;
 
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    try {
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                if (this.status == 200) {
-                    let jsonObject = JSON.parse(xhr.responseText);
-                    if (jsonObject.error) {
-                        console.log("Error from server: ", jsonObject.error);
-                        return;
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try {
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    console.log("Server Response:", this.responseText);
+                    if (this.status == 200) {
+                        let jsonObject = JSON.parse(xhr.responseText);
+                        if (jsonObject.error) {
+                            console.log("Error from server: ", jsonObject.error);
+                            return;
+                        }
+                        console.log("Contact deleted successfully");
+                        loadContacts(document.getElementById('searchText').value); // Reload contacts after deleting
+                    } else {
+                        console.log("HTTP status code: ", this.status);
                     }
-                    console.log("Contact deleted successfully");
-                    loadContacts(document.getElementById('searchText').value); // Reload contacts after deleting
-                } else {
-                    console.log("HTTP status code: ", this.status);
                 }
-            }
-        };
-        xhr.onerror = function() {
-            console.log("Request error: ", xhr.statusText);
-        };
-        console.log("Sending payload: ", jsonPayload); // Debugging line
-        xhr.send(jsonPayload);
-    } catch (err) {
-        console.log("Error: ", err.message);
+            };
+            xhr.onerror = function() {
+                console.log("Request error: ", xhr.statusText);
+            };
+            console.log("Sending payload: ", jsonPayload); // Debugging line
+            xhr.send(jsonPayload);
+        } catch (err) {
+            console.log("Error: ", err.message);
+        }
     }
 }
 
