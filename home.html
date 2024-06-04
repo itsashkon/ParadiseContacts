@@ -21,8 +21,8 @@
         </header>
         <div class="additional-content">
             <div class="search-bar">
-                <input type="text" id="search" placeholder="Search Contacts...">
-                <button type="button" id="searchButton" onclick="loadContacts()">Search</button>
+                <input type="text" id="searchText" placeholder="Search Contacts...">
+                <button type="button" id="searchButton" onclick="searchContact()">Search</button>
             </div>
             
             <form id="addContactForm">
@@ -38,13 +38,14 @@
                 <h2>Contacts</h2>
             </div>
             <div id="contact-list">
-                <table id="contacts-table">
+                <table id="contacts-table" border='1'>
                     <thread>
                         <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>Phone Number</th>
+                            <th>Edit/Delete</th>
                             <th></th>
                         </tr>
                     </thread>
