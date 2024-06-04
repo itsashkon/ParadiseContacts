@@ -292,10 +292,8 @@ function addContact() {
                 let jsonObject = JSON.parse(xhr.responseText);
                 if (jsonObject.error) {
                     console.log("Error from server: ", jsonObject.error);
-                    document.getElementById("addContactResult").innerHTML = jsonObject.error;
                 } else {
                     console.log("Contact added successfully");
-                    document.getElementById("addContactResult").innerHTML = "Contact has been added successfully";
                     document.getElementById("addContactForm").reset();
                 }
 
@@ -311,9 +309,9 @@ function addContact() {
         xhr.send(jsonPayload);
     } catch (err) {
         console.log("Error: ", err.message);
-        document.getElementById("addContactResult").innerHTML = err.message;
     }
 }
+
 
 function searchContact() {
     let srch = document.getElementById("searchText").value;
@@ -342,6 +340,10 @@ function searchContact() {
                     contactList += "<td>" + jsonObject.results[i].LastName + "</td>";
                     contactList += "<td>" + jsonObject.results[i].EmailAddress + "</td>";
                     contactList += "<td>" + jsonObject.results[i].PhoneNumber + "</td>";
+                    contactList += "<td>" +
+                        "<button onclick='editContact(" + jsonObject.results[i].ID + ")'><i class='fa fa-edit'></i></button>" +
+                        "<button onclick='deleteContact(" + jsonObject.results[i].ID + ")'><i class='fa fa-trash'></i></button>" +
+                        "</td>";
                     contactList += "</tr>";
                 }
 
@@ -359,35 +361,6 @@ function searchContact() {
     }
 }
 
-function removeContact() {
-    let contactId = document.getElementById("contactId").value;
-
-    let tmp = {id: contactId, userId: userId};
-    let jsonPayload = JSON.stringify(tmp);
-
-    let url = urlBase + '/LAMPAPI/deleteContact.' + extension;
-
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    try {
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                let jsonObject = JSON.parse(xhr.responseText);
-                if (jsonObject.error) {
-                    document.getElementById("removeContactResult").innerHTML = jsonObject.error;
-                } else {
-                    document.getElementById("removeContactResult").innerHTML = "Contact has been deleted successfully";
-                    document.getElementById("removeContactForm").reset();
-                }
-            }
-        };
-        xhr.send(jsonPayload);
-    } catch (err) {
-        document.getElementById("removeContactResult").innerHTML = err.message;
-    }
-}
-
 function getGlobalId() {
     return localStorage.getItem('globalId');
 }
@@ -397,9 +370,9 @@ function saveGlobalId(Id) {
     localStorage.setItem('globalId', Id);
 }
 
-function loadContacts() {
+function loadContacts(searchText = "") {
     let tmp = {
-        search: "",
+        search: searchText,
         userId: getGlobalId()
     };
 
@@ -420,17 +393,23 @@ function loadContacts() {
                 }
                 let contactList = "";
                 for (let i = 0; i < jsonObject.results.length; i++) {
-                    contactList += "<tr>";
-                    contactList += "<td>" + jsonObject.results[i].FirstName + "</td>";
-                    contactList += "<td>" + jsonObject.results[i].LastName + "</td>";
-                    contactList += "<td>" + jsonObject.results[i].EmailAddress + "</td>";
-                    contactList += "<td>" + jsonObject.results[i].PhoneNumber + "</td>";
-                    contactList += "</tr>";
+                    console.log(`Contact ID: ${jsonObject.results[i].ID}`); // Log contact IDs
+                    contactList += `<tr data-contact-id='${jsonObject.results[i].ID}'>`;
+                    contactList += `<td>${jsonObject.results[i].FirstName}</td>`;
+                    contactList += `<td>${jsonObject.results[i].LastName}</td>`;
+                    contactList += `<td>${jsonObject.results[i].EmailAddress}</td>`;
+                    contactList += `<td>${jsonObject.results[i].PhoneNumber}</td>`;
+                    contactList += `<td>
+                        <button onclick='editContact(${jsonObject.results[i].ID})'><i class='fa fa-edit'></i></button>
+                        <button onclick='deleteContact(${jsonObject.results[i].ID})'><i class='fa fa-trash'></i></button>
+                    </td>`;
+                    contactList += `</tr>`;
                 }
                 let contactsTableBody = document.getElementById("contacts-table-body");
                 if (contactsTableBody) {
                     console.log("Updating contacts-table-body with contacts");
                     contactsTableBody.innerHTML = contactList;
+                    verifyContactIds(); // Verify the contact IDs after updating the table
                 } else {
                     console.log("Element 'contacts-table-body' not found in loadContacts");
                 }
@@ -440,4 +419,149 @@ function loadContacts() {
     } catch (err) {
         console.log("Error: ", err.message);
     }
+}
+
+function verifyContactIds() {
+    let rows = document.querySelectorAll("tr[data-contact-id]");
+    if (rows.length === 0) {
+        console.log("No rows with data-contact-id found.");
+    } else {
+        rows.forEach(row => {
+            console.log(`Row with data-contact-id: ${row.getAttribute('data-contact-id')}`);
+        });
+    }
+}
+
+function editContact(contactId) {
+    console.log(`Attempting to edit contactId: ${contactId}`);
+    let row = document.querySelector(`tr[data-contact-id='${contactId}']`);
+    if (!row) {
+        console.log(`Row not found for contactId: ${contactId}`);
+        return;
+    }
+
+    let cells = row.cells;
+    let firstNameCell = cells[0];
+    let lastNameCell = cells[1];
+    let emailCell = cells[2];
+    let phoneCell = cells[3];
+    let actionsCell = cells[4];
+
+    let firstName = firstNameCell.textContent;
+    let lastName = lastNameCell.textContent;
+    let email = emailCell.textContent;
+    let phone = phoneCell.textContent;
+
+    firstNameCell.innerHTML = `<input type='text' id='editFirstName${contactId}' value='${firstName}'>`;
+    lastNameCell.innerHTML = `<input type='text' id='editLastName${contactId}' value='${lastName}'>`;
+    emailCell.innerHTML = `<input type='text' id='editEmail${contactId}' value='${email}'>`;
+    phoneCell.innerHTML = `<input type='text' id='editPhone${contactId}' value='${phone}'>`;
+
+    actionsCell.innerHTML = `<button onclick='saveContact(${contactId})'><i class='fa fa-save'></i></button>`;
+}
+
+function saveContact(contactId) {
+    let firstName = document.getElementById(`editFirstName${contactId}`).value;
+    let lastName = document.getElementById(`editLastName${contactId}`).value;
+    let email = document.getElementById(`editEmail${contactId}`).value;
+    let phone = document.getElementById(`editPhone${contactId}`).value;
+
+    console.log(`Saving contactId: ${contactId}, FirstName: ${firstName}, LastName: ${lastName}, Email: ${email}, Phone: ${phone}`);
+
+    let tmp = {
+        id: contactId,
+        firstName: firstName,
+        lastName: lastName,
+        emailAddress: email,
+        phoneNumber: phone
+    };
+
+    // Ensure the payload contains the contactId and fields to update
+    if (!contactId || (!firstName && !lastName && !email && !phone)) {
+        console.log("Error: Missing required fields");
+        return;
+    }
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/LAMPAPI/editContacts.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                console.log("Server Response:", this.responseText);
+                if (this.status == 200) {
+                    let jsonObject = JSON.parse(xhr.responseText);
+                    if (jsonObject.error) {
+                        console.log("Error from server: ", jsonObject.error);
+                        return;
+                    }
+                    console.log("Contact edited successfully");
+                    loadContacts(document.getElementById('searchText').value); // Reload contacts after editing
+                } else {
+                    console.log("HTTP status code: ", this.status);
+                }
+            }
+        };
+        xhr.onerror = function() {
+            console.log("Request error: ", xhr.statusText);
+        };
+        console.log("Sending payload: ", jsonPayload); // Debugging line
+        xhr.send(jsonPayload);
+    } catch (err) {
+        console.log("Error: ", err.message);
+    }
+}
+
+
+function deleteContact(contactId) {
+    console.log(`Attempting to delete contactId: ${contactId}`);
+
+    let tmp = {
+        id: contactId,
+        userId: getGlobalId()
+    };
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/LAMPAPI/deleteContact.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    let jsonObject = JSON.parse(xhr.responseText);
+                    if (jsonObject.error) {
+                        console.log("Error from server: ", jsonObject.error);
+                        return;
+                    }
+                    console.log("Contact deleted successfully");
+                    loadContacts(document.getElementById('searchText').value); // Reload contacts after deleting
+                } else {
+                    console.log("HTTP status code: ", this.status);
+                }
+            }
+        };
+        xhr.onerror = function() {
+            console.log("Request error: ", xhr.statusText);
+        };
+        console.log("Sending payload: ", jsonPayload); // Debugging line
+        xhr.send(jsonPayload);
+    } catch (err) {
+        console.log("Error: ", err.message);
+    }
+}
+
+function getGlobalId() {
+    return localStorage.getItem('globalId');
+}
+
+function searchContact() {
+    let searchText = document.getElementById('searchText').value;
+    loadContacts(searchText);
 }
