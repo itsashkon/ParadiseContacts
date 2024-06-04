@@ -6,15 +6,21 @@ let firstName = "";
 let lastName = "";
 
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("logForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        doLogin();
-    });
+    const logForm = document.getElementById("logForm");
+    if (logForm) {
+        logForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            doLogin();
+        });
+    }
 
-    document.getElementById("signupForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        doSignup();
-    });
+    const signupForm = document.getElementById("signupForm");
+    if (signupForm) {
+        signupForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            doSignup();
+        });
+    }
 
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
@@ -23,29 +29,50 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    document.getElementById("signup-username").addEventListener("input", function() {
-        checkUsernameComplexity(this.value);
-    });
-
-    document.getElementById("signup-pass").addEventListener("input", function() {
-        checkPasswordComplexity(this.value, "signup-");
+    const signupUsername = document.getElementById("signup-username");
+    if (signupUsername) {
+        signupUsername.addEventListener("input", function() {
+            checkUsernameComplexity(this.value);
         });
-    });
+    }
 
-    document.getElementById("addContactForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        addContact();
-    });
+    const signupPass = document.getElementById("signup-pass");
+    if (signupPass) {
+        signupPass.addEventListener("input", function() {
+            checkPasswordComplexity(this.value, "signup-");
+        });
+    }
 
-    document.getElementById("searchContactForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        searchContact();
-    });
+    const addContactForm = document.getElementById("addContactForm");
+    if (addContactForm) {
+        addContactForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            addContact();
+        });
+    }
 
-    document.getElementById("removeContactForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        removeContact();
-    });
+    const searchContactForm = document.getElementById("searchContactForm");
+    if (searchContactForm) {
+        searchContactForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            searchContact();
+        });
+    }
+
+    const removeContactForm = document.getElementById("removeContactForm");
+    if (removeContactForm) {
+        removeContactForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            removeContact();
+        });
+    }
+
+    const searchButton = document.getElementById("searchButton");
+    if (searchButton) {
+        searchButton.addEventListener("click", function() {
+        });
+    }
+});
 
 function checkUsernameComplexity(username) {
     const minLength = 3;
@@ -55,20 +82,22 @@ function checkUsernameComplexity(username) {
     let length = document.getElementById("username-length");
     let letter = document.getElementById("username-letter");
 
-    if (username.length >= minLength && username.length <= maxLength) {
-        length.classList.remove("invalid");
-        length.classList.add("valid");
-    } else {
-        length.classList.remove("valid");
-        length.classList.add("invalid");
-    }
+    if (length && letter) {
+        if (username.length >= minLength && username.length <= maxLength) {
+            length.classList.remove("invalid");
+            length.classList.add("valid");
+        } else {
+            length.classList.remove("valid");
+            length.classList.add("invalid");
+        }
 
-    if (hasLetter.test(username)) {
-        letter.classList.remove("invalid");
-        letter.classList.add("valid");
-    } else {
-        letter.classList.remove("valid");
-        letter.classList.add("invalid");
+        if (hasLetter.test(username)) {
+            letter.classList.remove("invalid");
+            letter.classList.add("valid");
+        } else {
+            letter.classList.remove("valid");
+            letter.classList.add("invalid");
+        }
     }
 }
 
@@ -84,36 +113,38 @@ function checkPasswordComplexity(password, prefix) {
     let letter = document.getElementById(prefix + "letter");
     let special = document.getElementById(prefix + "special");
 
-    if (password.length >= minLength && password.length <= maxLength) {
-        length.classList.remove("invalid");
-        length.classList.add("valid");
-    } else {
-        length.classList.remove("valid");
-        length.classList.add("invalid");
-    }
+    if (length && number && letter && special) {
+        if (password.length >= minLength && password.length <= maxLength) {
+            length.classList.remove("invalid");
+            length.classList.add("valid");
+        } else {
+            length.classList.remove("valid");
+            length.classList.add("invalid");
+        }
 
-    if (hasNumber.test(password)) {
-        number.classList.remove("invalid");
-        number.classList.add("valid");
-    } else {
-        number.classList.remove("valid");
-        number.classList.add("invalid");
-    }
+        if (hasNumber.test(password)) {
+            number.classList.remove("invalid");
+            number.classList.add("valid");
+        } else {
+            number.classList.remove("valid");
+            number.classList.add("invalid");
+        }
 
-    if (hasLetter.test(password)) {
-        letter.classList.remove("invalid");
-        letter.classList.add("valid");
-    } else {
-        letter.classList.remove("valid");
-        letter.classList.add("invalid");
-    }
+        if (hasLetter.test(password)) {
+            letter.classList.remove("invalid");
+            letter.classList.add("valid");
+        } else {
+            letter.classList.remove("valid");
+            letter.classList.add("invalid");
+        }
 
-    if (hasSpecialChar.test(password)) {
-        special.classList.remove("invalid");
-        special.classList.add("valid");
-    } else {
-        special.classList.remove("valid");
-        special.classList.add("invalid");
+        if (hasSpecialChar.test(password)) {
+            special.classList.remove("invalid");
+            special.classList.add("valid");
+        } else {
+            special.classList.remove("valid");
+            special.classList.add("invalid");
+        }
     }
 }
 
@@ -198,7 +229,6 @@ function doSignup() {
     }
 }
 
-
 function saveCookie() {
     let minutes = 20;
     let date = new Date();
@@ -243,6 +273,11 @@ function addContact() {
     let phoneNumber = document.getElementById("phone").value;
     let emailAddress = document.getElementById("email").value; // Added email field
 
+    console.log("First Name: ", firstName);
+    console.log("Last Name: ", lastName);
+    console.log("Phone Number: ", phoneNumber);
+    console.log("Email Address: ", emailAddress);
+
     let tmp = {firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, emailAddress: emailAddress, userId: getGlobalId()}; // Include userId
     let jsonPayload = JSON.stringify(tmp);
 
@@ -256,26 +291,35 @@ function addContact() {
             if (this.readyState == 4 && this.status == 200) {
                 let jsonObject = JSON.parse(xhr.responseText);
                 if (jsonObject.error) {
+                    console.log("Error from server: ", jsonObject.error);
                     document.getElementById("addContactResult").innerHTML = jsonObject.error;
                 } else {
+                    console.log("Contact added successfully");
                     document.getElementById("addContactResult").innerHTML = "Contact has been added successfully";
                     document.getElementById("addContactForm").reset();
+                }
+
+                let contactsTableBody = document.getElementById("contacts-table-body");
+                if (contactsTableBody) {
+                    console.log("Updating contacts table body");
+                    loadContacts();
+                } else {
+                    console.log("Element 'contacts-table-body' not found");
                 }
             }
         };
         xhr.send(jsonPayload);
     } catch (err) {
+        console.log("Error: ", err.message);
         document.getElementById("addContactResult").innerHTML = err.message;
     }
 }
 
 function searchContact() {
     let srch = document.getElementById("searchText").value;
-    document.getElementById("contactSearchResult").innerHTML = "";
-
     let contactList = "";
 
-    let tmp = {search: srch, userId: userId};
+    let tmp = {search: srch, userId: getGlobalId()};
     let jsonPayload = JSON.stringify(tmp);
 
     let url = urlBase + '/LAMPAPI/searchContacts.' + extension;
@@ -286,62 +330,72 @@ function searchContact() {
     try {
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("contactSearchResult").innerHTML = "Contact(s) has been retrieved";
                 let jsonObject = JSON.parse(xhr.responseText);
-
-                for (let i = 0; i < jsonObject.results.length; i++) {
-                    contactList += jsonObject.results[i];
-                    if (i < jsonObject.results.length - 1) {
-                        contactList += "<br />\r\n";
-                    }
+                if (jsonObject.error) {
+                    console.log("Error from server: ", jsonObject.error);
+                    return;
                 }
 
-                document.getElementsByTagName("p")[0].innerHTML = contactList;
+                for (let i = 0; i < jsonObject.results.length; i++) {
+                    contactList += "<tr>";
+                    contactList += "<td>" + jsonObject.results[i].FirstName + "</td>";
+                    contactList += "<td>" + jsonObject.results[i].LastName + "</td>";
+                    contactList += "<td>" + jsonObject.results[i].EmailAddress + "</td>";
+                    contactList += "<td>" + jsonObject.results[i].PhoneNumber + "</td>";
+                    contactList += "</tr>";
+                }
+
+                let contactsTableBody = document.getElementById("contacts-table-body");
+                if (contactsTableBody) {
+                    contactsTableBody.innerHTML = contactList;
+                } else {
+                    console.log("Element 'contacts-table-body' not found");
+                }
             }
         };
         xhr.send(jsonPayload);
     } catch (err) {
-        document.getElementById("contactSearchResult").innerHTML = err.message;
-    }
-
-    function removeContact() {
-        let contactId = document.getElementById("contactId").value;
-    
-        let tmp = {id: contactId, userId: userId};
-        let jsonPayload = JSON.stringify(tmp);
-    
-        let url = urlBase + '/LAMPAPI/deleteContact.' + extension; 
-    
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-        try {
-            xhr.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    let jsonObject = JSON.parse(xhr.responseText);
-                    if (jsonObject.error) {
-                        document.getElementById("removeContactResult").innerHTML = jsonObject.error;
-                    } else {
-                        document.getElementById("removeContactResult").innerHTML = "Contact has been deleted successfully";
-                        document.getElementById("removeContactForm").reset();
-                    }
-                }
-            };
-            xhr.send(jsonPayload);
-        } catch (err) {
-            document.getElementById("removeContactResult").innerHTML = err.message;
-        }
+        console.log("Error: ", err.message);
     }
 }
 
-    function getGlobalId(){
-        return localStorage.getItem('globalId');
+function removeContact() {
+    let contactId = document.getElementById("contactId").value;
+
+    let tmp = {id: contactId, userId: userId};
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/LAMPAPI/deleteContact.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    document.getElementById("removeContactResult").innerHTML = jsonObject.error;
+                } else {
+                    document.getElementById("removeContactResult").innerHTML = "Contact has been deleted successfully";
+                    document.getElementById("removeContactForm").reset();
+                }
+            }
+        };
+        xhr.send(jsonPayload);
+    } catch (err) {
+        document.getElementById("removeContactResult").innerHTML = err.message;
     }
-    
-    function saveGlobalId(Id){
-        console.log("globalId saved as:" + Id);
-        localStorage.setItem('globalId',Id);
-    }
+}
+
+function getGlobalId() {
+    return localStorage.getItem('globalId');
+}
+
+function saveGlobalId(Id) {
+    console.log("globalId saved as:" + Id);
+    localStorage.setItem('globalId', Id);
+}
 
 function loadContacts() {
     let tmp = {
@@ -357,28 +411,33 @@ function loadContacts() {
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
     try {
-        xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 let jsonObject = JSON.parse(xhr.responseText);
                 if (jsonObject.error) {
-                    console.log(jsonObject.error);
+                    console.log("Error from server: ", jsonObject.error);
                     return;
                 }
-                let row = "<table border='1'>"
+                let contactList = "";
                 for (let i = 0; i < jsonObject.results.length; i++) {
-                    text += "<tr id='row" + i + "'>";
-                    text += "<td id='first_Name" + i + "'><span>" + jsonObject.results[i].FirstName + "</span></td>";
-                    text += "<td id='last_Name" + i + "'><span>" + jsonObject.results[i].LastName + "</span></td>";
-                    text += "<td id='email" + i + "'><span>" + jsonObject.results[i].EmailAddress + "</span></td>";
-                    text += "<td id='phone" + i + "'><span>" + jsonObject.results[i].PhoneNumber + "</span></td>";
-                    text += "<tr/>"
+                    contactList += "<tr>";
+                    contactList += "<td>" + jsonObject.results[i].FirstName + "</td>";
+                    contactList += "<td>" + jsonObject.results[i].LastName + "</td>";
+                    contactList += "<td>" + jsonObject.results[i].EmailAddress + "</td>";
+                    contactList += "<td>" + jsonObject.results[i].PhoneNumber + "</td>";
+                    contactList += "</tr>";
                 }
-                text += "</table>"
-                document.getElementById("contacts-table-body").innerHTML = text;
+                let contactsTableBody = document.getElementById("contacts-table-body");
+                if (contactsTableBody) {
+                    console.log("Updating contacts-table-body with contacts");
+                    contactsTableBody.innerHTML = contactList;
+                } else {
+                    console.log("Element 'contacts-table-body' not found in loadContacts");
+                }
             }
         };
         xhr.send(jsonPayload);
     } catch (err) {
-        console.log(err.message);
+        console.log("Error: ", err.message);
     }
 }
