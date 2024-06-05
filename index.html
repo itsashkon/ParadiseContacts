@@ -8,11 +8,13 @@
     <script src="js/md5.js"></script>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="preload" as="image" href="images/logo.png">
 </head>
 <body>
     <div class="welcome-message">
         <p>Welcome to Paradise!</p>
     </div>
+
     <div class="login-cont">
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Login')" id="defaultOpen">Login</button>
@@ -20,7 +22,9 @@
         </div>
 
         <div id="Login" class="tabcontent">
-             <h2 class="h2-with-logo">ParadiseContacts</h2>
+            <a href="https://github.com/itsashkon/ParadiseContacts" class="h2-with-logo-link">
+                <h2 class="h2-with-logo">ParadiseContacts</h2>
+            </a>
             <form id="logForm">
                 <div class="input-group">
                     <label for="user">Username</label>
