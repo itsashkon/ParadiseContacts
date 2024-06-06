@@ -343,18 +343,84 @@ function doLogout() {
     window.location.href = "index.html";
 }
 
+function validAddContact(firstName, lastName, phone, email) {
+
+    var fNameErr = lNameErr = phoneErr = emailErr = true;
+
+    if (firstName == "") {
+        alert("Enter a first name");
+        console.log("FIRST NAME IS BLANK");
+    }
+    else {
+        console.log("first name IS VALID");
+        fNameErr = false;
+    }
+
+    if (lastName == "") {
+        alert("Enter a last name");
+        console.log("LAST NAME IS BLANK");
+    }
+    else {
+        console.log("LAST name IS VALID");
+        lNameErr = false;
+    }
+
+    if (phone == "") {
+        alert("Enter a phone number");
+        console.log("PHONE IS BLANK");  
+    }
+    else {
+        var regex = /^\d{3}-\d{3}-\d{4}$/;
+
+        if (regex.test(phone) == false) {
+            alert("Enter a valid phone number");
+            console.log("PHONE IS NOT VALID");
+        }
+        else {
+
+            console.log("PHONE IS VALID");
+            phoneErr = false;
+        }
+    }
+    if (email == "") {
+        alert("Enter an email address");
+        console.log("EMAIL IS BLANK");
+    }
+    else {
+        var regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+        if (regex.test(email) == false) {
+            alert("Enter a valid email address")
+            console.log("EMAIL IS NOT VALID");
+        }
+        else {
+
+            console.log("EMAIL IS VALID");
+            emailErr = false;
+        }
+    }
+    if ((phoneErr || emailErr || fNameErr || lNameErr) == true) {
+        return false;
+    }
+    return true;
+}
+
 function addContact() {
     let firstName = document.getElementById("first-name").value;
     let lastName = document.getElementById("last-name").value;
     let phoneNumber = document.getElementById("phone").value;
-    let emailAddress = document.getElementById("email").value; // Added email field
+    let emailAddress = document.getElementById("email").value; 
+
+    if (!validAddContact(firstName, lastName, phoneNumber, emailAddress)) {
+        console.log("INVALID FIRST NAME, LAST NAME, PHONE, OR EMAIL SUBMITTED");
+        return;
+    }
 
     console.log("First Name: ", firstName);
     console.log("Last Name: ", lastName);
     console.log("Phone Number: ", phoneNumber);
     console.log("Email Address: ", emailAddress);
 
-    let tmp = {firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, emailAddress: emailAddress, userId: getGlobalId()}; // Include userId
+    let tmp = {firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, emailAddress: emailAddress, userId: getGlobalId()}; 
     let jsonPayload = JSON.stringify(tmp);
 
     let url = urlBase + '/LAMPAPI/addContacts.' + extension;
@@ -468,6 +534,9 @@ function loadContacts(searchText = "") {
                     return;
                 }
                 let contactList = "";
+                let results = jsonObject.results; 
+                results.sort((a, b) => a.FirstName.localeCompare(b.FirstName));
+
                 for (let i = 0; i < jsonObject.results.length; i++) {
                     console.log(`Contact ID: ${jsonObject.results[i].ID}`); // Log contact IDs
                     contactList += `<tr data-contact-id='${jsonObject.results[i].ID}'>`;
